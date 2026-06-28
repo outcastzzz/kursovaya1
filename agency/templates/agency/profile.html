@@ -1,0 +1,218 @@
+{% extends 'agency/base.html' %}
+
+{% block title %}Мой профиль - AdAgency Pink{% endblock %}
+
+{% block content %}
+<div class="row mb-5" data-aos="fade-down">
+    <div class="col-12">
+        <h1 class="page-title">Мой профиль</h1>
+        <p class="lead" style="color: #666;">Добро пожаловать в личный кабинет, {{ user.username }}! ❤️</p>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Информация о пользователе -->
+    <div class="col-md-4 mb-4" data-aos="fade-right">
+        <div class="card">
+            <div class="card-header text-center">
+                <h3 class="mb-0"><i class="fas fa-user-circle"></i> Профиль</h3>
+            </div>
+            <div class="card-body text-center">
+                <div class="avatar-circle mx-auto mb-3" style="width: 100px; height: 100px; font-size: 40px; background: linear-gradient(135deg, #ff69b4, #ff1493);">
+                    {{ user.username|first|upper }}
+                </div>
+                <h4 class="pink-gradient-text">{{ user.username }}</h4>
+                <p class="text-muted">{{ user.email|default:"Email не указан" }}</p>
+
+                {% if user.is_superuser %}
+                <span class="badge-status" style="background: #ffb8d9; color: #d63384;">
+                    <i class="fas fa-crown"></i> Администратор
+                </span>
+                {% else %}
+                <span class="badge-status" style="background: #e9ecef; color: #666;">
+                    <i class="fas fa-user"></i> Обычный пользователь
+                </span>
+                {% endif %}
+
+                <hr style="border-color: rgba(255,105,180,0.2);">
+
+                <div class="text-start">
+                    <p><i class="fas fa-calendar-alt me-2" style="color: #ff69b4;"></i> Дата регистрации: {{ user.date_joined|date:"d.m.Y" }}</p>
+                    <p><i class="fas fa-clock me-2" style="color: #ff69b4;"></i> Последний вход: {{ user.last_login|date:"d.m.Y H:i" }}</p>
+                </div>
+
+                <a href="{% url 'logout' %}" class="btn btn-outline-pink mt-3">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Информация для обычного пользователя -->
+    <div class="col-md-8 mb-4" data-aos="fade-left">
+        <!-- Приветственная карточка -->
+        <div class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(135deg, #fff0f5, #ffe4e9);">
+                <h3 class="mb-0"><i class="fas fa-info-circle"></i> Добро пожаловать!</h3>
+            </div>
+            <div class="card-body">
+                <div class="text-center py-3">
+                    <i class="fas fa-smile-wink fa-4x" style="color: #ff69b4; margin-bottom: 15px;"></i>
+                    <h4 class="pink-gradient-text">Рады видеть вас, {{ user.username }}!</h4>
+                    <p class="text-muted">
+                        Вы вошли как обычный пользователь. Вы можете просматривать проекты и клиентов нашего агентства.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Быстрые ссылки для просмотра -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-compass"></i> Быстрая навигация</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6 mb-3">
+                        <a href="/projects/" class="text-decoration-none">
+                            <div class="card text-center h-100" style="cursor: pointer; transition: all 0.3s;">
+                                <div class="card-body">
+                                    <i class="fas fa-project-diagram fa-3x" style="color: #ff69b4; margin-bottom: 10px;"></i>
+                                    <h6>Проекты</h6>
+                                    <small class="text-muted">Просмотр проектов</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-sm-6 mb-3">
+                        <a href="/clients/" class="text-decoration-none">
+                            <div class="card text-center h-100" style="cursor: pointer; transition: all 0.3s;">
+                                <div class="card-body">
+                                    <i class="fas fa-users fa-3x" style="color: #ff69b4; margin-bottom: 10px;"></i>
+                                    <h6>Клиенты</h6>
+                                    <small class="text-muted">Просмотр клиентов</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Что умеет обычный пользователь -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-check-circle"></i> Ваши возможности</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Просмотр проектов</strong>
+                                <br><small class="text-muted">Все проекты агентства</small>
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Просмотр клиентов</strong>
+                                <br><small class="text-muted">Список всех клиентов</small>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Личный профиль</strong>
+                                <br><small class="text-muted">Управление аккаунтом</small>
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-paper-plane text-info me-2"></i>
+                                <strong>Заявки на проекты</strong>
+                                <br><small class="text-muted">Создание и отслеживание</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% if not user.is_superuser %}
+                <div class="alert alert-info mt-3" style="background: #ffe4e9; border: none; color: #d63384;">
+                    <i class="fas fa-info-circle"></i>
+                    Для создания и изменения проектов нужны права администратора.
+                    Обратитесь к администратору для получения расширенных прав.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Блок с заявками для обычного пользователя -->
+        {% if not user.is_superuser %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-rocket"></i> Хотите проект?</h3>
+            </div>
+            <div class="card-body text-center">
+                <p class="mb-3">Оставьте заявку, и мы обсудим детали вашего проекта!</p>
+                <a href="{% url 'project_request' %}" class="btn btn-custom">
+                    <i class="fas fa-paper-plane"></i> Создать заявку
+                </a>
+                <a href="{% url 'my_requests' %}" class="btn btn-outline-pink">
+                    <i class="fas fa-list"></i> Мои заявки
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Для администратора показываем расширенную информацию -->
+{% if user.is_superuser %}
+<div class="row mt-4" data-aos="fade-up">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header" style="background: linear-gradient(135deg, #ffb8d9, #ff9dcb);">
+                <h3 class="mb-0"><i class="fas fa-crown"></i> Панель администратора</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="stat-card">
+                            <i class="fas fa-users"></i>
+                            <h3>{{ total_clients|default:"0" }}</h3>
+                            <p>Клиентов</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="stat-card">
+                            <i class="fas fa-project-diagram"></i>
+                            <h3>{{ total_projects|default:"0" }}</h3>
+                            <p>Проектов</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="stat-card">
+                            <i class="fas fa-inbox"></i>
+                            <h3>{{ total_requests|default:"0" }}</h3>
+                            <p>Заявок</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-3">
+                    <a href="/admin/" class="btn btn-custom">
+                        <i class="fas fa-cog"></i> Перейти в админку
+                    </a>
+                    <a href="/admin/agency/project/add/" class="btn btn-outline-pink">
+                        <i class="fas fa-plus"></i> Создать проект
+                    </a>
+                    <a href="{% url 'admin_requests' %}" class="btn btn-outline-pink">
+                        <i class="fas fa-inbox"></i> Управление заявками
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

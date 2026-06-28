@@ -1,0 +1,73 @@
+{% extends 'agency/base.html' %}
+
+{% block title %}Мои заявки - AdAgency Pink{% endblock %}
+
+{% block content %}
+<!-- Заголовок -->
+<div class="row mb-4" data-aos="fade-down">
+    <div class="col-12">
+        <h1 class="page-title">Мои заявки на проекты</h1>
+    </div>
+</div>
+
+<!-- Список заявок -->
+<div class="row">
+    <div class="col-12">
+        <div class="card" data-aos="fade-up">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="mb-0"><i class="fas fa-list"></i> История заявок</h3>
+                <a href="{% url 'project_request' %}" class="btn btn-custom btn-sm">
+                    <i class="fas fa-plus"></i> Новая заявка
+                </a>
+            </div>
+            <div class="card-body">
+                {% if requests %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Проект</th>
+                                    <th>Компания</th>
+                                    <th>Бюджет</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for req in requests %}
+                                <tr>
+                                    <td>{{ req.created_at|date:"d.m.Y" }}</td>
+                                    <td><strong>{{ req.project_name }}</strong></td>
+                                    <td>{{ req.company_name }}</td>
+                                    <td>{{ req.budget|default:"—" }} ₽</td>
+                                    <td>
+                                        {% if req.status == 'new' %}
+                                            <span class="badge-status" style="background: #fff3bf; color: #856404;">Новая</span>
+                                        {% elif req.status == 'in_review' %}
+                                            <span class="badge-status" style="background: #ffb8d9; color: #d63384;">На рассмотрении</span>
+                                        {% elif req.status == 'approved' %}
+                                            <span class="badge-status" style="background: #a9e34b; color: #2b8a3e;">Одобрена</span>
+                                        {% elif req.status == 'rejected' %}
+                                            <span class="badge-status" style="background: #ffc9c9; color: #c92a2a;">Отклонена</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-4x" style="color: #ffb6c1; margin-bottom: 20px;"></i>
+                        <h4 style="color: #ff69b4;">У вас пока нет заявок</h4>
+                        <p class="text-muted mb-4">Создайте первую заявку на проект</p>
+                        <a href="{% url 'project_request' %}" class="btn btn-custom">
+                            <i class="fas fa-paper-plane"></i> Создать заявку
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

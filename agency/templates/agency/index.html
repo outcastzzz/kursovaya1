@@ -1,0 +1,427 @@
+{% extends 'agency/base.html' %}
+
+{% block title %}AdAgency Pink - Рекламное агентство{% endblock %}
+
+{% block content %}
+<div class="row mb-5" data-aos="fade-down">
+    <div class="col-12">
+        <div class="card" style="background: linear-gradient(135deg, #ff69b4, #ff1493);">
+            <div class="card-body text-center p-5">
+                <i class="fas fa-bullhorn fa-4x text-white mb-3"></i>
+                <h1 class="display-4 text-white">AdAgency Pink</h1>
+                <p class="lead text-white">Создаем эффективную рекламу с любовью и креативом ❤️</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4" data-aos="fade-up">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                {% if user.is_authenticated %}
+                <div class="d-flex align-items-center">
+                    <div class="avatar-circle me-3" style="width: 60px; height: 60px; font-size: 24px;">
+                        {{ user.username|first|upper }}
+                    </div>
+                    <div>
+                        <h4 class="mb-1">Привет, {{ user.username }}! 👋</h4>
+                        <p class="text-muted mb-0">
+                            {% if user.is_superuser %}
+                            <span class="badge-status" style="background: #ffb8d9; color: #d63384;">
+                                <i class="fas fa-crown"></i> Администратор
+                            </span>
+                            {% else %}
+                            <span class="badge-status" style="background: #e9ecef; color: #666;">
+                                <i class="fas fa-user"></i> Обычный пользователь
+                            </span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-user-circle fa-4x" style="color: #ffb6c1; margin-bottom: 15px;"></i>
+                    <h4>Добро пожаловать!</h4>
+                    <p class="text-muted">Выберите способ входа:</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if not user.is_authenticated %}
+<!-- БЛОК ДЛЯ НЕАВТОРИЗОВАННЫХ ПОЛЬЗОВАТЕЛЕЙ -->
+<div class="row mb-5">
+    <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100 text-center">
+            <div class="card-header" style="background: linear-gradient(135deg, #e9ecef, #dee2e6);">
+                <i class="fas fa-eye fa-3x mb-2" style="color: #666;"></i>
+                <h4>Анонимный пользователь</h4>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Просто просматриваю сайт</p>
+                <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Просмотр проектов</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Просмотр клиентов</li>
+                    <li class="mb-2"><i class="fas fa-times-circle text-danger me-2"></i>Создание/изменение</li>
+                    <li class="mb-2"><i class="fas fa-times-circle text-danger me-2"></i>Личный кабинет</li>
+                </ul>
+                <a href="/" class="btn btn-outline-pink w-100">
+                    <i class="fas fa-globe"></i> Продолжить как гость
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card h-100 text-center">
+            <div class="card-header" style="background: linear-gradient(135deg, #fff3bf, #ffe69b);">
+                <i class="fas fa-user fa-3x mb-2" style="color: #856404;"></i>
+                <h4>Обычный пользователь</h4>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Есть аккаунт на сайте</p>
+                <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Просмотр проектов</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Просмотр клиентов</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Отправка заявок на проекты</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Личный кабинет</li>
+                    <li class="mb-2"><i class="fas fa-times-circle text-danger me-2"></i>Создание проектов</li>
+                </ul>
+                <a href="{% url 'login' %}?next={% url 'profile' %}" class="btn btn-custom w-100 mb-2">
+                    <i class="fas fa-sign-in-alt"></i> Войти
+                </a>
+                <a href="#" class="btn btn-outline-pink w-100">
+                    <i class="fas fa-user-plus"></i> Регистрация
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card h-100 text-center">
+            <div class="card-header" style="background: linear-gradient(135deg, #ffb8d9, #ff9dcb);">
+                <i class="fas fa-crown fa-3x mb-2" style="color: #d63384;"></i>
+                <h4>Администратор</h4>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Полный доступ к системе</p>
+                <ul class="list-unstyled text-start mb-4">
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Просмотр всего</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Создание проектов</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Управление клиентами</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Доступ к админке</li>
+                </ul>
+                <a href="{% url 'login' %}?next=/admin/" class="btn btn-custom w-100">
+                    <i class="fas fa-lock"></i> Войти как admin
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Статистика (видна всем) -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card" data-aos="fade-up">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-chart-line"></i> Наша статистика</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-card">
+                            <i class="fas fa-users"></i>
+                            <h3>{{ total_clients|default:"0" }}</h3>
+                            <p>Клиентов</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <div class="stat-card">
+                            <i class="fas fa-project-diagram"></i>
+                            <h3>{{ total_projects|default:"0" }}</h3>
+                            <p>Проектов</p>
+                        </div>
+                    </div>
+
+
+    <div class="col-md-3 mb-4">
+        <div class="stat-card">
+            <i class="fas fa-calendar-alt"></i>
+            <h3>5</h3>  <!-- Статичное число, можешь изменить -->
+            <p>Лет на рынке</p>
+        </div>
+    </div>
+                     <div class="col-md-3 mb-4">
+        <div class="stat-card" >
+            <i class="fas fa-ruble-sign"></i>
+            <h3>{{ total_budget|floatformat:0 }} ₽</h3>
+            <p>Общий бюджет</p>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- О нас - информационный блок -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card" data-aos="fade-up">
+            <div class="card-header text-center" style="background: linear-gradient(135deg, #ff69b4, #ff1493);">
+                <h2 class="text-white mb-0"><i class="fas fa-info-circle"></i> О рекламном агентстве AdAgency Pink</h2>
+            </div>
+            <div class="card-body p-4">
+                <div class="row">
+                    <div class="col-lg-6 mb-4" data-aos="fade-right">
+                        <h3 class="pink-gradient-text mb-3"><i class="fas fa-heart"></i> Кто мы?</h3>
+                        <p class="text-muted" style="font-size: 16px; line-height: 1.8;">
+                            <strong>AdAgency Pink</strong> — это креативное рекламное агентство полного цикла,
+                            специализирующееся на создании эффективных рекламных кампаний для бизнеса любого масштаба.
+                            Мы объединяем стратегическое мышление, креативный подход и современные технологии,
+                            чтобы каждый наш проект достигал поставленных целей и приносил реальные результаты.
+                        </p>
+                        <p class="text-muted" style="font-size: 16px; line-height: 1.8;">
+                            Наша команда состоит из опытных маркетологов, дизайнеров, копирайтеров и стратегов,
+                            которые работают как единый механизм для достижения вашего успеха.
+                        </p>
+                    </div>
+                    <div class="col-lg-6 mb-4" data-aos="fade-left">
+                        <h3 class="pink-gradient-text mb-3"><i class="fas fa-crown"></i> Наши преимущества</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Индивидуальный подход</strong> - разрабатываем стратегию под каждый бизнес
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Прозрачная отчетность</strong> - вы всегда знаете, куда идут бюджеты
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Команда экспертов</strong> - 10+ специалистов в разных областях
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Соблюдение сроков</strong> - дедлайны для нас священны
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Гарантия качества</strong> - делаем бесплатные правки до вашего одобрения
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Наши услуги -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card" data-aos="fade-up">
+            <div class="card-header text-center" style="background: linear-gradient(135deg, #ff1493, #ff69b4);">
+                <h2 class="text-white mb-0"><i class="fas fa-cogs"></i> Наши услуги</h2>
+            </div>
+            <div class="card-body p-4">
+                <div class="row">
+                    <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <i class="fas fa-bullseye fa-4x" style="color: #ff69b4; margin-bottom: 15px;"></i>
+                                <h4 class="pink-gradient-text">Стратегический маркетинг</h4>
+                                <ul class="list-unstyled text-start mt-3">
+                                    <li><i class="fas fa-check text-success me-2"></i>Маркетинговые исследования</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Разработка стратегии</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Анализ конкурентов</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Позиционирование бренда</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <i class="fas fa-paint-brush fa-4x" style="color: #ff69b4; margin-bottom: 15px;"></i>
+                                <h4 class="pink-gradient-text">Креатив и дизайн</h4>
+                                <ul class="list-unstyled text-start mt-3">
+                                    <li><i class="fas fa-check text-success me-2"></i>Разработка фирменного стиля</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Дизайн упаковки</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Создание рекламных макетов</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Брендбуки и гайдлайны</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <i class="fas fa-globe fa-4x" style="color: #ff69b4; margin-bottom: 15px;"></i>
+                                <h4 class="pink-gradient-text">Digital-маркетинг</h4>
+                                <ul class="list-unstyled text-start mt-3">
+                                    <li><i class="fas fa-check text-success me-2"></i>SEO-оптимизация</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Контекстная реклама</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>SMM продвижение</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Email-маркетинг</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <i class="fas fa-video fa-4x" style="color: #ff69b4; margin-bottom: 15px;"></i>
+                                <h4 class="pink-gradient-text">Видео и контент</h4>
+                                <ul class="list-unstyled text-start mt-3">
+                                    <li><i class="fas fa-check text-success me-2"></i>Съемка рекламных роликов</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Создание контента</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Фотосъемка продуктов</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Анимация и моушн-дизайн</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="500">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <i class="fas fa-chart-line fa-4x" style="color: #ff69b4; margin-bottom: 15px;"></i>
+                                <h4 class="pink-gradient-text">Медиапланирование</h4>
+                                <ul class="list-unstyled text-start mt-3">
+                                    <li><i class="fas fa-check text-success me-2"></i>Размещение наружной рекламы</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>ТВ и радио размещение</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Реклама у блогеров</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Медиабаинги</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="600">
+                        <div class="card h-100 text-center">
+                            <div class="card-body">
+                                <i class="fas fa-chart-pie fa-4x" style="color: #ff69b4; margin-bottom: 15px;"></i>
+                                <h4 class="pink-gradient-text">Аналитика и отчетность</h4>
+                                <ul class="list-unstyled text-start mt-3">
+                                    <li><i class="fas fa-check text-success me-2"></i>Веб-аналитика</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Отчеты по эффективности</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>А/В тестирование</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Оптимизация кампаний</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Примеры работ (портфолио) -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card" data-aos="fade-up">
+            <div class="card-header text-center" style="background: linear-gradient(135deg, #ff69b4, #ff1493);">
+                <h2 class="text-white mb-0"><i class="fas fa-briefcase"></i> Наши проекты</h2>
+            </div>
+            <div class="card-body p-4">
+                <div class="row">
+                    {% for project in recent_projects|slice:":4" %}
+                    <div class="col-md-6 col-lg-3 mb-4" data-aos="flip-left" data-aos-delay="{{ forloop.counter|add:100 }}">
+                        <div class="card h-100">
+                            <div class="card-header" style="background: linear-gradient(135deg, #ffb6c1, #ff69b4);">
+                                <h6 class="text-white mb-0 text-truncate">{{ project.name }}</h6>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted small mb-2">
+                                    <i class="fas fa-building"></i> {{ project.client.name|truncatechars:20 }}
+                                </p>
+                                <p class="small">{{ project.description|truncatechars:60 }}</p>
+                                <span class="badge-status
+                                    {% if project.status == 'completed' %}badge-completed
+                                    {% else %}badge-progress{% endif %}">
+                                    {{ project.get_status_display }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-center py-3">
+                        <p class="text-muted">Скоро здесь появятся наши проекты</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-center mt-3">
+                    <a href="/projects/" class="btn btn-outline-pink">
+                        <i class="fas fa-arrow-right"></i> Смотреть все проекты
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Блок для авторизованных пользователей (не админов) -->
+{% if user.is_authenticated and not user.is_superuser %}
+<div class="row mb-5" data-aos="fade-up">
+    <div class="col-12">
+        <div class="card" style="background: linear-gradient(135deg, #fff0f5, #ffe4e9); border: 2px solid #ff69b4;">
+            <div class="card-body text-center p-5">
+                <i class="fas fa-rocket fa-4x" style="color: #ff69b4; margin-bottom: 20px;"></i>
+                <h3 style="color: #ff1493; font-size: 28px;">Хотите запустить проект?</h3>
+                <p class="lead mb-4" style="color: #666; font-size: 18px;">
+                    Оставьте заявку, и мы обсудим детали вашего проекта!
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'project_request' %}" class="btn btn-custom btn-lg">
+                        <i class="fas fa-paper-plane"></i> Создать заявку
+                    </a>
+                    <a href="{% url 'my_requests' %}" class="btn btn-outline-pink btn-lg">
+                        <i class="fas fa-list"></i> Мои заявки
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Блок для анонимных пользователей -->
+{% if not user.is_authenticated %}
+<div class="row mb-5" data-aos="fade-up">
+    <div class="col-12">
+        <div class="card" style="background: white;">
+            <div class="card-body text-center p-5">
+                <i class="fas fa-user-plus fa-4x" style="color: #ff69b4; margin-bottom: 20px;"></i>
+                <h3 style="color: #ff1493; font-size: 28px;">Хотите заказать проект?</h3>
+                <p class="lead mb-4" style="color: #666; font-size: 18px;">
+                    Зарегистрируйтесь, чтобы оставлять заявки на проекты!
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'register' %}" class="btn btn-custom btn-lg">
+                        <i class="fas fa-user-plus"></i> Регистрация
+                    </a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-pink btn-lg">
+                        <i class="fas fa-sign-in-alt"></i> Вход
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,182 @@
+{% extends 'agency/base.html' %}
+
+{% block title %}Проекты - AdAgency Pink{% endblock %}
+
+{% block content %}
+<!-- Заголовок -->
+<div class="row mb-5" data-aos="fade-down">
+    <div class="col-12">
+        <h1 class="page-title">Наши проекты</h1>
+        <p class="lead" style="color: #666;">Все рекламные кампании и проекты агентства</p>
+    </div>
+</div>
+
+<!-- Фильтры -->
+<div class="row mb-4" data-aos="fade-up">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-outline-pink active" data-filter="all">Все проекты</button>
+                    <button class="btn btn-outline-pink" data-filter="planning">Планирование</button>
+                    <button class="btn btn-outline-pink" data-filter="in_progress">В работе</button>
+                    <button class="btn btn-outline-pink" data-filter="completed">Завершенные</button>
+                    <button class="btn btn-outline-pink" data-filter="on_hold">Приостановлены</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Сетка проектов -->
+<div class="row" id="projectsGrid">
+    {% for project in projects %}
+    <div class="col-md-6 col-lg-4 mb-4 project-item" data-status="{{ project.status }}" data-aos="zoom-in" data-aos-delay="{{ forloop.counter|add:50 }}">
+        <div class="card h-100">
+            <!-- Шапка проекта -->
+            <div class="card-header" style="background: linear-gradient(135deg, #ff69b4, #ff1493); padding: 20px;">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h5 class="card-title text-white mb-0">{{ project.name }}</h5>
+                    <span class="badge bg-white" style="color: #ff1493; font-weight: 600;">
+                        {{ project.get_status_display }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <!-- Информация о клиенте -->
+                <div class="d-flex align-items-center mb-3">
+                    <div class="avatar-circle me-2" style="width: 40px; height: 40px; background: linear-gradient(135deg, #ffb6c1, #ff9eb5);">
+                        {{ project.client.name|first|upper }}
+                    </div>
+                    <div>
+                        <h6 class="mb-0 pink-gradient-text">{{ project.client.name }}</h6>
+                        <small class="text-muted">
+                            <i class="fas fa-envelope"></i> {{ project.client.email }}
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Описание -->
+                <p class="card-text text-muted mb-3">
+                    {{ project.description|truncatechars:100 }}
+                </p>
+
+                <!-- Даты -->
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="text-center">
+                        <small class="text-muted d-block">Начало</small>
+                        <strong>{{ project.start_date|date:"d.m.Y" }}</strong>
+                    </div>
+                    <div class="text-center">
+                        <small class="text-muted d-block">Окончание</small>
+                        <strong>{{ project.end_date|date:"d.m.Y"|default:"—" }}</strong>
+                    </div>
+                </div>
+
+                <!-- Статистика -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex gap-3">
+                        <span class="text-muted small" title="Задачи">
+                            <i class="fas fa-tasks" style="color: #ff69b4;"></i> {{ project.tasks.count }}
+                        </span>
+                        <span class="text-muted small" title="Файлы">
+                            <i class="fas fa-paperclip" style="color: #ff69b4;"></i> {{ project.files.count }}
+                        </span>
+                        {% if is_admin %}
+                        <span class="text-muted small" title="Бюджет">
+                            <i class="fas fa-ruble-sign" style="color: #ff69b4;"></i> {{ project.budget|default:"0" }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Прогресс бар (только для админа) -->
+                {% if is_admin %}
+                <div class="mt-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <small class="text-muted">Прогресс</small>
+                        <small class="text-muted">{{ project.progress }}%</small>
+                    </div>
+                    <div class="progress-pink">
+                        <div class="progress-bar" style="width: {{ project.progress }}%;"></div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Футер карточки -->
+
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="card" data-aos="fade-up">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-folder-open fa-5x" style="color: #ffb6c1; margin-bottom: 20px;"></i>
+                <h4 style="color: #ff69b4;">Пока нет проектов</h4>
+                <p class="text-muted mb-4">Проекты появятся здесь после создания администратором</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .btn-outline-pink.active {
+        background: linear-gradient(135deg, #ff69b4, #ff1493) !important;
+        color: white !important;
+        border: none !important;
+    }
+
+    .project-item {
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: center;
+    }
+
+    .project-item .card {
+        width: 100%;
+        max-width: 380px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterButtons = document.querySelectorAll('[data-filter]');
+        const projectItems = document.querySelectorAll('.project-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.style.background = 'transparent';
+                    btn.style.color = '#ff1493';
+                });
+
+                this.classList.add('active');
+                this.style.background = 'linear-gradient(135deg, #ff69b4, #ff1493)';
+                this.style.color = 'white';
+
+                const filterValue = this.getAttribute('data-filter');
+
+                projectItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-status') === filterValue) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'scale(1)';
+                        }, 10);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'scale(0.8)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

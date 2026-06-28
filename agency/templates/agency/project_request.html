@@ -1,0 +1,70 @@
+{% extends 'agency/base.html' %}
+
+{% block title %}Заявка на проект - AdAgency Pink{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center" data-aos="fade-up">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header text-center">
+                <h3 class="mb-0"><i class="fas fa-paper-plane"></i> Заявка на проект</h3>
+                <p class="text-muted mt-2">Расскажите о вашем проекте, и мы свяжемся с вами</p>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Название компании</label>
+                            {{ form.company_name }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Контактное лицо</label>
+                            {{ form.contact_person }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Телефон</label>
+                            {{ form.phone }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            {{ form.email }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Название проекта</label>
+                        {{ form.project_name }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Описание проекта</label>
+                        {{ form.project_description }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Примерный бюджет (₽)</label>
+                        {{ form.budget }}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-custom btn-lg">
+                            <i class="fas fa-paper-plane"></i> Отправить заявку
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

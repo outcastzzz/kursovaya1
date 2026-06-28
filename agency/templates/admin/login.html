@@ -1,0 +1,19 @@
+{% extends "admin/login.html" %}
+{% load static %}
+
+{% block content %}
+<div style="text-align: center; margin-bottom: 30px;">
+    <i class="fas fa-bullhorn" style="font-size: 48px; color: #ff69b4;"></i>
+    <h1 style="color: #ff1493; font-family: 'Playfair Display', serif; margin-top: 10px;">AdAgency Pink</h1>
+    <p style="color: #666;">Вход в панель управления</p>
+</div>
+{{ block.super }}
+
+<div style="margin-top: 20px; text-align: center;">
+    <p style="color: #999; font-size: 12px;">
+        <i class="fas fa-heart" style="color: #ffb6c1;"></i>
+        Управляйте проектами с любовью
+        <i class="fas fa-heart" style="color: #ffb6c1;"></i>
+    </p>
+</div>
+{% endblock %}

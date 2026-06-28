@@ -1,0 +1,56 @@
+{% extends 'agency/base.html' %}
+
+{% block title %}Страница не найдена - AdAgency Pink{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center" data-aos="fade-up">
+    <div class="col-md-8">
+        <div class="card text-center">
+            <div class="card-header" style="background: linear-gradient(135deg, #ffb8d9, #ff9dcb);">
+                <h2 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Ошибка 404</h2>
+            </div>
+            <div class="card-body py-5">
+                <i class="fas fa-map-signs fa-5x" style="color: #ff69b4; margin-bottom: 20px;"></i>
+                <h3 class="pink-gradient-text mb-3">Упс! Страница не найдена</h3>
+                <p class="text-muted mb-4">
+                    Кажется, вы забрели не туда. Возможно, страница была удалена<br>
+                    или у вас нет прав для её просмотра.
+                </p>
+
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="/" class="btn btn-custom">
+                        <i class="fas fa-home"></i> На главную
+                    </a>
+                    <a href="javascript:history.back()" class="btn btn-outline-pink">
+                        <i class="fas fa-arrow-left"></i> Назад
+                    </a>
+
+                    <!-- Кнопка выхода из аккаунта -->
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="btn btn-danger" style="background: #ffc9c9; color: #c92a2a; border: none;">
+                        <i class="fas fa-sign-out-alt"></i> Выйти из аккаунта ({{ user.username }})
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card-footer bg-transparent border-0 pb-4">
+                <i class="fas fa-heart" style="color: #ffb6c1;"></i>
+                <i class="fas fa-heart mx-2" style="color: #ffb6c1;"></i>
+                <i class="fas fa-heart" style="color: #ffb6c1;"></i>
+            </div>
+        </div>
+
+        <!-- Подсказка -->
+        <div class="card mt-4">
+            <div class="card-body text-center">
+                <i class="fas fa-info-circle" style="color: #ff69b4;"></i>
+                <p class="mb-0 text-muted">
+                    Хотите войти под другим пользователем?
+                    <a href="{% url 'logout' %}" style="color: #ff1493;">Выйдите</a> из текущего аккаунта и зайдите снова.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

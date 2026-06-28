@@ -1,0 +1,73 @@
+{% extends 'agency/base.html' %}
+
+{% block title %}Вход - AdAgency Pink{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center" data-aos="fade-up">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header text-center">
+                <h3 class="mb-0"><i class="fas fa-lock"></i> Вход в систему</h3>
+            </div>
+            <div class="card-body p-4">
+                {% if form.errors %}
+                <div class="alert alert-danger" role="alert" style="background: #ffc9c9; border: none; color: #c92a2a;">
+                    <i class="fas fa-exclamation-triangle"></i> Неправильное имя пользователя или пароль. Попробуйте снова.
+                </div>
+                {% endif %}
+
+                {% if next %}
+                    {% if user.is_authenticated %}
+                    <div class="alert alert-warning" style="background: #fff3bf; border: none; color: #856404;">
+                        <i class="fas fa-info-circle"></i> У вашего аккаунта нет доступа к этой странице.
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info" style="background: #ffe4e9; border: none; color: #d63384;">
+                        <i class="fas fa-info-circle"></i> Пожалуйста, войдите чтобы увидеть эту страницу.
+                    </div>
+                    {% endif %}
+                {% endif %}
+
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+                        <label class="form-label" style="color: #ff1493; font-weight: 500;">
+                            <i class="fas fa-user"></i> Имя пользователя
+                        </label>
+                        <input type="text" name="username" class="form-control form-control-lg" style="border-radius: 15px; border: 2px solid #ffe4e9;" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label" style="color: #ff1493; font-weight: 500;">
+                            <i class="fas fa-key"></i> Пароль
+                        </label>
+                        <input type="password" name="password" class="form-control form-control-lg" style="border-radius: 15px; border: 2px solid #ffe4e9;" required>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-custom btn-lg">
+                            <i class="fas fa-sign-in-alt"></i> Войти
+                        </button>
+                    </div>
+
+                    <input type="hidden" name="next" value="{{ next }}">
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted">
+                        <a href="{% url 'password_reset' %}" style="color: #ff69b4; text-decoration: none;">
+                            <i class="fas fa-question-circle"></i> Забыли пароль?
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Розовое сердечко для настроения -->
+        <div class="text-center mt-4">
+            <i class="fas fa-heart fa-2x" style="color: #ffb6c1; animation: heartPulse 1.5s infinite;"></i>
+        </div>
+    </div>
+</div>
+{% endblock %}

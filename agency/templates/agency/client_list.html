@@ -1,0 +1,126 @@
+{% extends 'agency/base.html' %}
+
+{% block title %}Клиенты - AdAgency Pink{% endblock %}
+
+{% block content %}
+<!-- Заголовок -->
+<div class="row mb-5" data-aos="fade-down">
+    <div class="col-12">
+        <h1 class="page-title">Наши клиенты</h1>
+        <p class="lead" style="color: #666;">Компании, которые нам доверяют</p>
+    </div>
+</div>
+
+<!-- Статистика клиентов (только для просмотра) -->
+<div class="row mb-5">
+    <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="stat-card">
+            <i class="fas fa-users"></i>
+            <h3>{{ clients|length }}</h3>
+            <p>Всего клиентов</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="stat-card">
+            <i class="fas fa-project-diagram"></i>
+            <h3>{{ active_projects }}</h3>
+            <p>Активных проектов</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="stat-card">
+            <i class="fas fa-star"></i>
+            <h3>98%</h3>
+            <p>Довольных клиентов</p>
+        </div>
+    </div>
+</div>
+
+<!-- Сетка клиентов (ТОЛЬКО ПРОСМОТР) -->
+<div class="row">
+    {% for client in clients %}
+    <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+        <div class="card h-100">
+            <div class="card-body">
+                <!-- Аватар компании -->
+                <div class="text-center mb-4">
+                    <div class="avatar-circle mx-auto" style="width: 80px; height: 80px; font-size: 32px; background: linear-gradient(135deg, #ff69b4, #ff1493);">
+                        {{ client.name|first|upper }}
+                    </div>
+                </div>
+
+                <!-- Название компании -->
+                <h4 class="text-center pink-gradient-text mb-3">{{ client.name }}</h4>
+
+                <!-- Контактная информация (только просмотр) -->
+               <!-- Контактная информация -->
+<div class="mb-4">
+    {% if is_admin %}  <!-- Только админ видит контакты -->
+    <div class="d-flex align-items-center mb-3">
+        <div class="avatar-circle me-3" style="width: 35px; height: 35px; background: linear-gradient(135deg, #ffb6c1, #ff9eb5);">
+            <i class="fas fa-user"></i>
+        </div>
+        <div>
+            <small class="text-muted d-block">Контактное лицо</small>
+            <strong>{{ client.contact_person }}</strong>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+        <div class="avatar-circle me-3" style="width: 35px; height: 35px; background: linear-gradient(135deg, #ffb6c1, #ff9eb5);">
+            <i class="fas fa-phone"></i>
+        </div>
+        <div>
+            <small class="text-muted d-block">Телефон</small>
+            <strong>{{ client.phone }}</strong>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+        <div class="avatar-circle me-3" style="width: 35px; height: 35px; background: linear-gradient(135deg, #ffb6c1, #ff9eb5);">
+            <i class="fas fa-envelope"></i>
+        </div>
+        <div>
+            <small class="text-muted d-block">Email</small>
+            <strong>{{ client.email }}</strong>
+        </div>
+    </div>
+    {% else %}
+    <p class="text-muted text-center py-3">
+        <i class="fas fa-lock"></i> Контактные данные доступны только администратору
+    </p>
+    {% endif %}
+</div>
+
+                <!-- Статистика проектов (только просмотр) -->
+                <div class="d-flex justify-content-around pt-3 border-top" style="border-color: rgba(255,105,180,0.2) !important;">
+                    <div class="text-center">
+                        <h5 class="pink-gradient-text mb-0">{{ client.projects.count }}</h5>
+                        <small class="text-muted">Проектов</small>
+                    </div>
+
+                    <div class="text-center">
+                        <h5 class="pink-gradient-text mb-0">{{ client.created_at|date:"Y" }}</h5>
+                        <small class="text-muted">С нами</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Футер карточки - ТОЛЬКО ПРОСМОТР (без кнопок действий) -->
+
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="card" data-aos="fade-up">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-users fa-5x" style="color: #ffb6c1; margin-bottom: 20px;"></i>
+                <h4 style="color: #ff69b4;">Пока нет клиентов</h4>
+                <p class="text-muted mb-4">Клиенты появятся здесь после добавления администратором</p>
+                <!-- Убрали кнопку добавления клиента -->
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
